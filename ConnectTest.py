@@ -22,7 +22,7 @@ collectingData = False
 
 # change the collectionDuration variable to alter the amount of time spent collecting data after
 # the button on the arduino has been pressed
-collectionDuration = 13 # the system has a few second delay, to record 30s, write 33~
+collectionDuration = 40 # the system has a few second delay, to record 30s, write 40~
 minPower = 100000
 maxPower = -100000
 startTime = 0
