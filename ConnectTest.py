@@ -66,7 +66,7 @@ def writeData(i):
     index_time = next(index)
    
     # add a value to the x-axis (simulating time)
-    timeAxis.append(index_time/5)
+    timeAxis.append(index_time/5) # divided by 5 for 0.2s data cycle
     # add the power read from the arduino to the y-axis if applicable
     powerAxis.append(decodedData)
     string = ''
