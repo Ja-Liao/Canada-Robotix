@@ -11,7 +11,7 @@ from datetime import date
 # connect with arduino
 arduino = serial.Serial(port = "COM3", baudrate = 9600)
 # x-axis (will have to change this later to match the data collection period)
-index = count()
+index = count() 
 specifiedIntervalIndex = count()
 timeAxis = []
 powerAxis = []
@@ -22,15 +22,18 @@ collectingData = False
 
 # change the collectionDuration variable to alter the amount of time spent collecting data after
 # the button on the arduino has been pressed
-collectionDuration = 40 # the system has a few second delay, to record 30s, write 40~
+collectionDuration = 75.6 # the system has a a lot of delay, to record 30s, write 75.6
 minPower = 100000
 maxPower = -100000
 startTime = 0
 fig, axs = plt.subplots(2, 1)
+start_save_data_time = 0
 
 def writeData(i):
     global collectingData
     global startTime
+    global start_save_data_time
+    
     # get data from the arduino
     encodedData = arduino.readline()
     # convert the data into a string
@@ -54,33 +57,41 @@ def writeData(i):
         maxPower = decodedData
     if(decodedData < minPower):
         minPower = decodedData
-
+    
+    # print('index = ', index)
+    # int_index = ''.join(x for x in str(index) if x.isdigit())
+    # int_index = int(int_index)
+    # print(int_index)
+    
+    index_time = next(index)
+   
     # add a value to the x-axis (simulating time)
-    timeAxis.append(next(index))
+    timeAxis.append(index_time/5)
     # add the power read from the arduino to the y-axis if applicable
     powerAxis.append(decodedData)
     string = ''
     if collectingData == True and time.time() - startTime <= collectionDuration:
-        specifiedIntervalTimeAxis.append(next(specifiedIntervalIndex))
+        if start_save_data_time == 0:
+            start_save_data_time = index_time/5
+            print('*', start_save_data_time)
+        specifiedIntervalTimeAxis.append(next(specifiedIntervalIndex)/5)
         specifiedIntervalPowerAxis.append(decodedData)
         
+        ## functions for 
         index_str = str(index)
         index_new = ''
         for i in index_str:
             if i.isdigit():
                 index_new += i
                 
-        string = index_new + ", " + str(decodedData)
+        string = str(str(round((index_time/5 - start_save_data_time), 1))) + ", " + str(decodedData)
         
         savedata(string)
-        print(collectionDuration)
-        print(time.time() - startTime)
+        # print(collectionDuration)
+        # print(time.time() - startTime)
         
         
-    print(str(index) + "s, " + str(decodedData) + "mW")
-    # with open('20220926-Test-0001.txt', 'w') as f:
-    #     f.write('Time Power\n')
-    #     f.write(str(index) + "s, " + str(decodedData) + "mW\n")
+    print(str(index_time/5) + "s, " + str(decodedData) + "mW")
     
     axs[0].cla()
     axs[1].cla()
@@ -112,6 +123,6 @@ def savedata(str):
         f.write(str + '\n')
 
 # graph of live values (the interval variable is the period of data collection in milliseconds)
-graph = FuncAnimation(plt.gcf(), writeData, interval = 1000)
+graph = FuncAnimation(plt.gcf(), writeData, interval = 200)
 plt.tight_layout()
 plt.show()
