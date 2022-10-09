@@ -73,7 +73,7 @@ def writeData(i):
     if collectingData == True and time.time() - startTime <= collectionDuration:
         if start_save_data_time == 0:
             start_save_data_time = index_time/5
-            print('*', start_save_data_time)
+            # print('*', start_save_data_time)
         specifiedIntervalTimeAxis.append(next(specifiedIntervalIndex)/5)
         specifiedIntervalPowerAxis.append(decodedData)
         
