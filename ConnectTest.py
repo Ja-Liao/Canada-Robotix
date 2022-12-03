@@ -115,11 +115,13 @@ def writeData(i):
     # axs[1].scatter(specifiedIntervalTimeAxis, specifiedIntervalPowerAxis)
     
 def savedata(str):
-    today = date.today()
-    d1 = today.strftime("%Y%m%d")
-    filename = d1 + '-Test-' + '.txt'
+    # today = date.today()
+    # d1 = today.strftime("%Y%m%d")
+    # print(d1)
+    # filename = d1 + '-Test-' + '.txt'
     
-    with open(filename, 'a') as f:
+    # modify "Test.txt" to whichever text file name you want to use
+    with open("Test.txt", 'a') as f:
         f.write(str + '\n')
 
 # graph of live values (the interval variable is the period of data collection in milliseconds)
